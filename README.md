@@ -50,9 +50,9 @@ Modified from 'Modified from 'Adafruit Python ILI9341' written by Tony DiCola fo
 Pimoroni invests time and resources forking and modifying this open source code, 
 please support Pimoroni and open-source software by purchasing products from us, too!
 
-Vincent Lin was modified this repo based on the three repository's ideas that introduced on [Licensing](https://github.com/vincnttt/ST7735_pylib#Licensing) part above, 
+Vincent Lin was modified this repo based on the three repository's ideas that introduced on [Licensing](https://github.com/vincnttt/ST7735_pylib#license) part above, 
 mixing the methods to make it work with ST7735 1.8inch (128x160 pixel) TFT SPI, 
-with some features that introduced in [Modification](https://github.com/vincnttt/ST7735_pylib#Modification) part below.
+with some features that introduced in [Modification](https://github.com/vincnttt/ST7735_pylib#modification) part below.
 
 ### Modification
 
