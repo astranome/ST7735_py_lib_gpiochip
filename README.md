@@ -1,40 +1,69 @@
-Python ST7735
-=======================
+# ST7735 PYLib
 
-Python library to control an ST7735 TFT LCD display.  Allows simple drawing on the display without installing a kernel module.
+[![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/vincnttt/ST7735_pylib/blob/master/LICENSE)
+![device](https://img.shields.io/badge/raspberrypi-4b-red)
+![python](https://img.shields.io/badge/python-3.9-blue)
 
-Designed specifically to work with a ST7735 based 128x160 pixel TFT SPI display.
+Python library to control an ST7735 TFT LCD display.  Allows simple drawing on the display without installing a kernel module. 
 
-For all platforms (Raspberry Pi and Beaglebone Black) make sure you have the following dependencies:
+Designed specifically to work with a ST7735 1.8inch (128x160 pixel) TFT SPI display.
 
-````
-sudo apt-get update
-sudo apt-get install build-essential python-dev python-smbus python-pip python-imaging python-numpy
-````
+## Installation
 
-For a Raspberry Pi make sure you have the RPi.GPIO and Adafruit GPIO libraries by executing:
+### Python 3
 
-````
-sudo pip install RPi.GPIO
-sudo pip install Adafruit_GPIO
-````
+Install required dependencies
 
-For a BeagleBone Black make sure you have the Adafruit_BBIO library by executing:
+```commandline
+sudo pip install numpy spidev RPi.GPIO
+```
 
-````
-sudo pip install Adafruit_BBIO
-````
+## Usages
 
-Install the library by downloading with the download link on the right, unzipping the archive, navigating inside the library's directory and executing:
+At present, this repository still not available to install using `pip`, so its recommended to copy the file `/ST7735/ST7735.py` into your project directory. 
 
-````
-sudo python setup.py install
-````
+Then to use, import the library like showed below.
 
-See example of usage in the examples folder.
+```python
+import ST7735
+```
 
-Adafruit invests time and resources providing this open source code, please support Adafruit and open-source hardware by purchasing products from Adafruit!
+**Tested and work on Raspberry PI 4b, Python 3.9.x**
 
-Modified from 'Adafruit Python ILI9341' written by Tony DiCola for Adafruit Industries.
+## License
+
+This library is a modification of a modification of code originally written by Tony DiCola for Adafruit Industries [repo](https://github.com/adafruit/Adafruit_Python_ILI9341), 
+and modified to work with the ST7735 by Clement Skau [repo](https://github.com/cskau/Python_ST7735).
+
+Now this library has been modified by Vincent Lin to support ST7735 1.8inch (128x160 pixel), 
+originally this modification was motivate by Pimoroni to include support for their 160x80 SPI LCD breakout [repo](https://github.com/pimoroni/st7735-python)
 
 MIT license, all text above must be included in any redistribution
+
+## History and Modification
+
+Adafruit invests time and resources providing this open source code, 
+please support Adafruit and open-source hardware by purchasing products from Adafruit!
+
+Modified from 'Modified from 'Adafruit Python ILI9341' written by Tony DiCola for Adafruit Industries.' written by Clement Skau.
+
+Pimoroni invests time and resources forking and modifying this open source code, 
+please support Pimoroni and open-source software by purchasing products from us, too!
+
+Vincent Lin was modified this repo based on the three repository's ideas that introduced on [Licensing](https://github.com/vincnttt/ST7735_pylib#Licensing) part above, 
+mixing the methods to make it work with ST7735 1.8inch (128x160 pixel) TFT SPI, 
+with some features that introduced in [Modification](https://github.com/vincnttt/ST7735_pylib#Modification) part below.
+
+### Modification
+
+* Set value of `width=128` and `height=160`
+* Support screen rotation `rotation`
+* Dependencies `Adafruit_GPIO` replaced with `RPi.GPIO` and `spidev`
+
+## Examples
+
+See example of usage in the `/examples/` folder.
+
+## Thanks
+
+Thanks to Tony DiCola for Adafruit Industries, Clement Skau and Pimoroni :clap:, to make this project open-source till now :smiley:
