@@ -18,12 +18,17 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
+#
+# Adapted for ZYNQ 7000 by Andrew Kobelev. 2024
+# If need
+# pip3 install gpiod
 import numbers
 import time
 import numpy as np
+import gpiod
 
+from gpiod.line import Direction, Value 
 import spidev
-import RPi.GPIO as GPIO
 
 # SPI_CLOCK_HZ = 64000000 # 64 MHz
 SPI_CLOCK_HZ = 4000000  # 4 MHz
@@ -108,11 +113,29 @@ def image_to_data(image, rotation=0):
     color = ((pb[:, :, 0] & 0xF8) << 8) | ((pb[:, :, 1] & 0xFC) << 3) | (pb[:, :, 2] >> 3)
     return np.dstack(((color >> 8) & 0xFF, color & 0xFF)).flatten().tolist()
 
+def output(line_offset, val, chip_path="/dev/gpiochip0"):
+    value_str = {Value.ACTIVE: "Active", Value.INACTIVE: "Inactive"}
+    if val == True:
+        value = Value.ACTIVE
+    else:
+        value = Value.INACTIVE
+
+    with gpiod.request_lines(
+        chip_path,
+        consumer="Astra-LAB",
+        config={
+            line_offset: gpiod.LineSettings(
+                direction=Direction.OUTPUT, output_value= value
+            )
+        },
+    ) as request:
+        
+        request.set_value(line_offset, value)
 
 class ST7735(object):
     """Representation of an ST7735 TFT LCD."""
 
-    def __init__(self, port, cs, dc, backlight=None, rst=None, width=ST7735_TFTWIDTH,
+    def __init__(self, port, cs, dc=5, backlight=None, rst=15, width=ST7735_TFTWIDTH,
                  height=ST7735_TFTHEIGHT, rotation=0, spi_speed_hz=4000000):
         """Create an instance of the display using SPI communication.  Must
         provide the GPIO pin number for the D/C pin and the SPI driver.  Can
@@ -120,10 +143,9 @@ class ST7735(object):
         parameter.
         """
 
-        GPIO.setwarnings(False)
-        GPIO.setmode(GPIO.BCM)
-
+                output(9, 0)
         self._spi = spidev.SpiDev(port, cs)
+        #self._spi.open(0, 1)
         self._spi.mode = 0
         self._spi.lsbfirst = False
         self._spi.max_speed_hz = spi_speed_hz
@@ -134,23 +156,19 @@ class ST7735(object):
         self._height = height
         self._rotation = rotation
 
-        # Set DC as output.
-        GPIO.setup(dc, GPIO.OUT)
-
+        
+        output(9, 0) 
         # Setup backlight as output (if provided).
         self._backlight = backlight
         if backlight is not None:
-            GPIO.setup(backlight, GPIO.OUT)
-            GPIO.output(backlight, GPIO.LOW)
+            
+            output(backlight, LOW)
             time.sleep(0.1)
-            GPIO.output(backlight, GPIO.HIGH)
+            output(backlight, HIGH)
 
-        # Setup reset as output (if provided).
-        if rst is not None:
-            GPIO.setup(rst, GPIO.OUT)
-
-        self.reset()
+                self.reset()
         self._init()
+        output(9, 0)
 
     def send(self, data, is_data=True, chunk_size=4096):
         """Write a byte or array of bytes to the display. Is_data parameter
@@ -159,7 +177,7 @@ class ST7735(object):
         single SPI transaction, with a default of 4096.
         """
         # Set DC low for command, high for data.
-        GPIO.output(self._dc, is_data)
+        output(self._dc, is_data)
         # Convert scalar argument to list so either can be passed as parameter.
         if isinstance(data, numbers.Number):
             data = [data & 0xFF]
@@ -168,7 +186,7 @@ class ST7735(object):
     def set_backlight(self, value):
         """Set the backlight on/off."""
         if self._backlight is not None:
-            GPIO.output(self._backlight, value)
+            output(self._backlight, value)
 
     @property
     def width(self):
@@ -189,11 +207,11 @@ class ST7735(object):
     def reset(self):
         """Reset the display, if reset pin is connected."""
         if self._rst is not None:
-            GPIO.output(self._rst, 1)
+            output(self._rst, 1)
             time.sleep(0.500)
-            GPIO.output(self._rst, 0)
+            output(self._rst, 0)
             time.sleep(0.500)
-            GPIO.output(self._rst, 1)
+            output(self._rst, 1)
             time.sleep(0.500)
 
     def _init(self):
@@ -317,9 +335,11 @@ class ST7735(object):
         """Initialize the display.  Should be called once before other calls that
         interact with the display are called.
         """
+        #spi = spidev.SpiDev() #https://github.com/doceme/py-spidev
+        output(9, 0) # cs is grounded
         pass
 
-    def set_window(self, x0=0, y0=0, x1=None, y1=None):
+    def set_window(self, x0=0, y0=0, x1=None, y1=-30):
         """Set the pixel address window for proceeding drawing commands. x0 and
         x1 should define the minimum and maximum x pixel bounds.  y0 and y1
         should define the minimum and maximum y pixel bound.  If no parameters
