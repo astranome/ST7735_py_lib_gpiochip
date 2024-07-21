@@ -18,6 +18,13 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
+"""
+Author: Vincent Lin
+Created on: 2023.03.27
+GitHub: https://github.com/vincnttt
+Ported for ZYNQ7000: Andrew Kobelev. 2024.07.21
+"""
+
 from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
@@ -25,10 +32,10 @@ from ST7735 import ST7735
 
 disp = ST7735(
     port=0,
-    cs=0,
-    dc=24,      # dc at pin 24
-    rst=25,     # rst at pin 25
-    rotation=90,    # set rotation to 90 degrees
+    cs=1,
+    dc=5,      # dc at pin 24
+    rst=15,     # rst at pin 25
+    rotation=180,    # set rotation to 90 degrees
     width=128,
     height=160,
     spi_speed_hz=4000000
@@ -87,9 +94,9 @@ def draw_rotated_text(image, text, position, angle, font, fill=(255, 255, 255)):
     image.paste(rotated, position, rotated)
 
 # Write two lines of white text on the buffer, rotated 90 degrees counter clockwise.
-draw_rotated_text(img, 'Hello World!', (0, 0), 90, font, fill=(255, 255, 255))
-draw_rotated_text(img, 'This is a line of text.', (20, 80), 90, font, fill=(255,255,255))
-
+draw_rotated_text(img, 'Hello Bambook!', (3, 3), 90, font, fill=(255, 255, 255))
+draw_rotated_text(img, 'It works on ASTRA9 platform', (40, 0), 90, font, fill=(200,255,255))
+draw_rotated_text(img, 'ZYNQ 7010', (80, 5), 90, font, fill=(100,255,100))
 # Write buffer to display hardware, must be called to make things visible on the
 # display!
 disp.display(img)
