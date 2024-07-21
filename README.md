@@ -5,8 +5,10 @@
 ![python](https://img.shields.io/badge/python-3.9-blue)
 
 Python library to control an ST7735 TFT LCD display.  Allows simple drawing on the display without installing a kernel module. 
+![ST7735](https://github.com/user-attachments/assets/e67c3bd9-313d-456b-a3e2-661898288f4e)
 
-Designed specifically to work with a ST7735 1.8inch (128x160 pixel) TFT SPI display.
+
+Designed specifically to work with a ST7735 1.8inch (128x160 pixel) TFT SPI display. It works on different platforms, not just Raspberry Pi!
 
 ## Installation
 
