@@ -18,15 +18,22 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
+"""
+Author: Vincent Lin
+Created on: 2023.03.27
+GitHub: https://github.com/vincnttt
+Ported for ZYNQ7000: Andrew Kobelev. 2024.07.21
+"""
+
 from PIL import Image
 from ST7735 import ST7735
 
 disp = ST7735(
     port=0,
-    cs=0,
-    dc=24,      # dc at pin 24
-    rst=25,     # rst at pin 25
-    rotation=90,    # set rotation to 90 degrees
+    cs=1,
+    dc=5,      # dc at pin 5
+    rst=15,     # rst at pin 15
+    rotation=270,    # set rotation to 90 degrees
     width=128,
     height=160,
     spi_speed_hz=4000000
@@ -36,7 +43,7 @@ disp = ST7735(
 disp.begin()
 
 # initialize the width and height of display
-WIDTH = disp.width
+WIDTH = disp.width #width
 HEIGHT = disp.height
 
 # load image
