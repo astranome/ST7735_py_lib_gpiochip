@@ -15,7 +15,7 @@ Designed specifically to work with a ST7735 1.8inch (128x160 pixel) TFT SPI disp
 Install required dependencies
 
 ```commandline
-sudo pip install numpy spidev RPi.GPIO
+sudo pip install numpy spidev gpiod
 ```
 
 ## Usages
@@ -28,7 +28,7 @@ Then to use, import the library like showed below.
 import ST7735
 ```
 
-**Tested and work on Raspberry PI 4b, Python 3.9.x**
+**Tested and work on Zynq 7010, Python 3.10**
 
 ## License
 
