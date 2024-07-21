@@ -1,7 +1,7 @@
 # ST7735 PYLib
 
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/vincnttt/ST7735_pylib/blob/master/LICENSE)
-![device](https://img.shields.io/badge/raspberrypi-4b-red)
+![device]https://www.amd.com/en/products/adaptive-socs-and-fpgas/soc/zynq-7000.html
 ![python](https://img.shields.io/badge/python-3.9-blue)
 
 Python library to control an ST7735 TFT LCD display.  Allows simple drawing on the display without installing a kernel module. 
